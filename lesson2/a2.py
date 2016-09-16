@@ -1,6 +1,5 @@
-# #Implementation of a Kalman filter class.
-# A sequence of position elements lets you make a prediction 
-# and understand the velocity of a moving object. When there is uncertainty.
+#Kalman Filter implemented for 2 dimensional movement.
+
 
 from math import *
 
@@ -139,41 +138,62 @@ class matrix:
 
 ########################################
 
-# Implement the filter function below
-
 def kalman_filter(x, P):
-
     for n in range(len(measurements)):
         
-        #update
-        Z = matrix([[measurements[n]]])
-        y = Z - (H * x)
+        # prediction
+        x = (F * x) + u
+        P = F * P * F.transpose()
+        
+        # measurement update
+        Z = matrix([measurements[n]])
+        y = Z.transpose() - (H * x)
         S = H * P * H.transpose() + R
         K = P * H.transpose() * S.inverse()
         x = x + (K * y)
         P = (I - (K * H)) * P
 
-        #prediction
-        x = (F * x) + u
-        P = F * P * F.transpose()
+        
+    
+    print 'x= '
+    x.show()
+    print 'P= '
+    P.show()
 
-    return x,P
 
-############################################
-### Test Code For Filter
-############################################
-measurements = [1, 2, 3]
 
-x = matrix([[0.], [0.]]) # initial state (location and velocity)
-P = matrix([[1000., 0.], [0., 1000.]]) # initial uncertainty
-u = matrix([[0.], [0.]]) # external motion
-F = matrix([[1., 1.], [0, 1.]]) # next state function
-H = matrix([[1., 0.]]) # measurement function
-R = matrix([[1.]]) # measurement uncertainty
-I = matrix([[1., 0.], [0., 1.]]) # identity matrix
+measurements = [[5., 10.], [6., 8.], [7., 6.], [8., 4.], [9., 2.], [10., 0.]]
+initial_xy = [4., 12.]
 
-print kalman_filter(x,P)
 
-# output should be:
-# x: [[3.9996664447958645], [0.9999998335552873]]
-# P: [[2.3318904241194827, 0.9991676099921091], [0.9991676099921067, 0.49950058263974184]]
+dt = 0.1
+
+x = matrix([[initial_xy[0]], [initial_xy[1]], [0.], [0.]]) # initial state (location and velocity)
+u = matrix([[0.], [0.], [0.], [0.]]) # external motion
+
+
+
+P =  matrix([[0., 0., 0., 0.], 
+            [0., 0., 0., 0.], 
+            [0., 0., 1000., 0.], 
+            [0., 0., 0., 1000.]])# initial uncertainty
+
+F =  matrix([[1., 0., dt, 0.],
+            [0., 1., 0., dt], 
+            [0., 0., 1., 0.], 
+            [0., 0., 0., 1.]])# next state function
+
+H =  matrix([[1., 0., 0., 0.], 
+            [0., 1., 0., 0.]])# measurement function
+
+R =  matrix([[0.1, 0.], 
+            [0, 0.1]])# measurement uncertainty, noise matrix
+
+I =  matrix([[1., 0., 0., 0.],
+             [0., 1., 0., 0.],
+             [0., 0., 1., 0.],
+             [0., 0., 0., 1.]]) # identity matrix
+
+
+
+kalman_filter(x, P)
