@@ -1,8 +1,8 @@
 p=[0.2, 0.2, 0.2, 0.2, 0.2]
-world=['green', 'red', 'red', 'green', 'green']
-Z = 'green'
-pHit = 0.6
-pMiss = 0.2
+world=['green', 'green', 'red', 'green', 'red']
+Z = 'red'
+pHit = 0.9
+pMiss = 0.1
 
 def sense(p, Z):
 	q = []

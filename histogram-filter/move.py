@@ -3,14 +3,14 @@
 #the intended destination.
 
 p=[.2, .2, .2, .2, .2]
-world=['green', 'red', 'red', 'green', 'green']
+world=['green', 'gren', 'red', 'green', 'red']
 measurements = ['red', 'green']
-motions = [1,1]
-pHit = 0.6
-pMiss = 0.2
-pExact = 0.8
-pOvershoot = 0.1
-pUndershoot = 0.1
+motions = [1]
+pHit = 0.9
+pMiss = 0.1
+pExact = 1.0
+#pOvershoot = 0.1
+#pUndershoot = 0.1
 
 def sense(p, Z):
     q=[]
@@ -26,18 +26,14 @@ def move(p, U):
     q = []
     for i in range(len(p)):
     	s = pExact * p[(i-U) % len(p)]
-    	s += pOvershoot * p[(i-U-1) % len(p)]
-    	s += pUndershoot * p[(i-U+1) % len(p)]
+    	#s += pOvershoot * p[(i-U-1) % len(p)]
+    	#s += pUndershoot * p[(i-U+1) % len(p)]
         q.append(s)
     return q
 
 
-# do a whole bunch of steps  
-# steps = 1000
-# for i in xrange(steps):
-# 	p = move(p,1)
-
-
+p = sense(p,'red')
+#p = move(p, 1)
 
 
 print p
