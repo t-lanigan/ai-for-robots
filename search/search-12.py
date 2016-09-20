@@ -42,7 +42,7 @@ cost = 1
 # modify code below
 # ----------------------------------------
 
-def search():
+def search(grid, init, goal, cost, heuristic):
     closed = [[0 for row in range(len(grid[0]))] for col in range(len(grid))]
     closed[init[0]][init[1]] = 1
 
@@ -91,4 +91,4 @@ def search():
         print expand[i]
     return expand #Leave this line for grading purposes!
 
-search()
+search(grid, init, goal, cost, heuristic)
